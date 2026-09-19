@@ -1,33 +1,12 @@
-# Konduto
-Uma linguagem de especificação de comportamento
+# Especificação da Konduto
 
-**ATENÇÃO**: Em Fase Experimental. A sintaxe e os conceitos podem mudar.
-
-## 1. Introdução
-
-Se você der o mesmo requisito a 10 programadores, provavelmente você vai obter 10 programas diferentes.
-
-Cada programador tem seu jeito de programar, seus padrões de projeto preferidos, suas prioridades, seu estilo, etc.
-
-Normalmente, essas diferenças não geram prejuízo em projetos pequenos ou simples.
-
-Entretanto, quando se trata de projetos duradouros e complexos, esses diversos “jeitos” de programar podem causar uma redução na produtividade da equipe, pois, além do tempo necessário para implementar o que foi pedido, o programador começa a gastar cada vez mais tempo tentando entender o código-fonte que já existe.
-
-E a maioria absoluta dessas diferenças não agregam valor para o usuário. E, mesmo quando há um ganho de desempenho, normalmente ele é imperceptível para quem usa o sistema.
-
-Essa é a motivação para a criação da Konduto, uma linguagem focada em especificar aquilo que importa para o usuário: o comportamento do sistema.
-
-A palavra “konduto” significa “comportamento” em Esperanto.
-
-## 2. Especificação
-
-A Konduto é uma linguagem escrita em formato JSON, cujo schema será descrito na seção 2.1. Com o intuito de facilitar a leitura por humanos, o schema será apresentado em linguagem Typescript.
+A Konduto é uma linguagem escrita em formato JSON. Com o intuito de facilitar a leitura por humanos, o schema será apresentado em linguagem Typescript.
 
 Alguns itens do JSON correspondem a componentes gráficos (campos de texto, botões, combos, etc) que serão exibidos na tela, e alguns desses componentes disparam eventos.
 
 O que o sistema deve fazer quando esses eventos são disparados são as chamadas ações, as quais são descritas na seção 2.2.
 
-### 2.1. Estrutura JSON
+## 1. Estrutura JSON
 
 A seção principal indica os dados principais dos sistema:
 
@@ -43,7 +22,7 @@ interface Sistema {
 }
 ```
 
-#### 2.1.1. Modelo de Entidades e Relacionamentos
+### 1.1. Modelo de Entidades e Relacionamentos
 
 A seção Entidade tem a seguinte estrutura:
 
@@ -141,7 +120,7 @@ Quando o relacionamento é NxN, é necessário registrar na Konduto uma entidade
 }
 ```
 
-#### 2.1.2. Funcionalidades
+### 1.2. Funcionalidades
 
 Para Konduto, uma funcionalidade tem os seguintes dados:
 
@@ -162,27 +141,25 @@ interface Funcionalidade {
 }
 ```
 
-
-
-##### 2.1.2.1. Nome
+#### 1.2.1. Nome
 
 O atributo “nome” indica o nome da funcionalidade, e é por ele que ela será referenciada. Ele pode ser usado para gerar a URL, para mudar de página (ação Direcionar seção x.y.z TODO), para gerar requisitos, etc.
 
-##### 2.1.2.2. Página
+#### 1.2.2. Página
 
 O atributo “página” indica se a funcionalidade está associada a uma página própria, ou seja, ao ser executada, vai mudar a URL do navegador e remover todos os componentes da tela atual, perder os dados salvos, enfim, todo o contexto é perdido.
 
 Caso a funcionalidade atual precise transmitir dados à seguinte, isto deve ser feito via parâmetros, conforme seção 2.1.2.7.
 
-##### 2.1.2.3. URL
+#### 1.2.3. URL
 
 O atributo “url” indica a URL da página, e, portanto, deve ser ignorado caso “pagina” seja false. Caso “pagina” seja true e o atributo “url” esteja ausente, a url deve ser gerada automaticamente. 
 
-##### 2.1.2.4. Módulo
+#### 1.2.4. Módulo
 
 Em sistemas grandes, é comum agrupar as funcionalidades em módulos. O atributo “módulo” indica o módulo da funcionalidade. Caso esteja ausente, supõe que a funcionalidade está no módulo default.
 
-##### 2.1.2.5. Entidade
+#### 1.2.5. Entidade
 
 Geralmente uma funcionalidade está claramente associada a uma entidade específica.
 
@@ -192,7 +169,7 @@ O atributo “entidade” indica esta entidade.
 
 Este atributo é obrigatório por uma questão técnica de geração de código: no backend, os arquivos “Resource” costumam estar associados às entidades (exemplo, “PessoaResource”). Esse atributo, portanto, indica ao gerador qual Resource deve ser utilizado.
 
-##### 2.1.2.6. Variáveis
+#### 1.2.6. Variáveis
 
 Em alguns casos, o comportamento especificado depende de dados temporários.
 
@@ -200,7 +177,7 @@ Por exemplo, se o sistema deve exibir uma mensagem após o usuário clicar 3 vez
 
 Dados como esse contador serão declarados no atributo “variáveis”. Caso este atributo esteja ausente, deve-se considerar que ele é uma lista vazia.
 
-##### 2.1.2.7. Parâmetros
+#### 1.2.7. Parâmetros
 
 Algumas funcionalidades precisam receber dados para serem executadas. 
 
@@ -208,7 +185,7 @@ Por exemplo, “Remover Pessoa” precisa receber no mínimo o ID da pessoa a se
 
 Esses dados são declarados no atributo “parâmetros”. Caso este atributo esteja ausente, deve-se considerar que ele é uma lista vazia.
 
-##### 2.1.2.8. Tipos
+#### 1.2.8. Tipos
 
 Às vezes é preciso declarar certas estruturas que só serão utilizadas por uma determinada funcionalidade. Essas estruturas podem surgir de diversas necessidades, tais como manipulação de dados ou exibição correta em componentes gráficos.
 
@@ -216,21 +193,21 @@ Esses dados são declarados no atributo “parâmetros”. Caso este atributo es
 
 Este atributo deve conter apenas dados compostos. Para declarar dados primitivos, deve-se utilizar o atributo “variáveis”, conforme seção 2.1.2.6.
 
-##### 2.1.2.9. Classe e Estilo
+#### 1.2.9. Classe e Estilo
 
 O conteúdo dos atributos “classe” e “estilo” correspondem, respectivamente, ao conteúdo exato dos atributos “class” e “style” do componente container da funcionalidade, seja ela uma página ou uma modal.
 
 Esses atributos são úteis para o gerenciamento de layout, ou seja, eles vão indicar como os componentes serão dispostos visualmente na tela.
 
-##### 2.1.2.10. Ações
+#### 1.2.10. Ações
 
 O atributo “aoIniciar” contém o texto que descreve as ações que devem ser executadas assim que a funcionalidade é acionada, e, portanto, deve obedecer a sintaxe descrita na seção 2.2.
 
 Essas ações só podem referenciar os dados (componentes, variáveis, parâmetros, etc) da própria funcionalidade.
 
-##### 2.1.2.11. Componentes
+#### 1.2.11. Componentes
 
-#### 2.1.3. Estrutura do JSON Completa
+### 1.3. Estrutura do JSON Completa
 
 ```typescript
 interface Sistema {
@@ -336,11 +313,11 @@ interface Filler {
 }
 ```
 
-### 2.2. Ações
+## 2. Ações
 
-	Nesta seção são apresentadas as ações permitidas pela Konduto.
+Nesta seção são apresentadas as ações permitidas pela Konduto.
 
-#### 2.2.1. Exibe Componentes
+### 2.1. Exibe Componentes
 
 Exibe na tela os componentes informados. Os componentes devem ser referenciados pelos nomes. A tela pode ser a tela principal ou uma modal.
 Ao iniciar uma funcionalidade, todos os componentes devem estar ocultos. Portanto, um componente só é exibido após esta ação ser executada.
@@ -356,9 +333,9 @@ Exemplos:
 exibe campos ‘Nome’;
 exibe campos ‘Nome’,’CPF’,’Salvar’;
 ```
-#### 2.2.2. Omite Componentes
+### 2.2. Omite Componentes
 
-	Omite os componentes informados. Os componentes devem ser referenciados pelos nomes.
+Omite os componentes informados. Os componentes devem ser referenciados pelos nomes.
 
 Sintaxe:
 ```
@@ -371,10 +348,10 @@ Exemplos:
 omite campos ‘Nome’;
 omite campos ‘Nome’,’CPF’,’Salvar’;
 ```
-#### 2.2.3. Abre Modal
+### 2.3. Abre Modal
 
-	Abre a modal informada e executa as ações contidas no atributo “aoAbrir”. A modal deve ser referenciada pelo nome.
-	Ao iniciar uma funcionalidade, todas as modais devem estar ocultas. Portanto, uma modal só é aberta após esta ação ser executada.
+Abre a modal informada e executa as ações contidas no atributo “aoAbrir”. A modal deve ser referenciada pelo nome.
+Ao iniciar uma funcionalidade, todas as modais devem estar ocultas. Portanto, uma modal só é aberta após esta ação ser executada.
 
 Sintaxe:
 ```
@@ -384,9 +361,9 @@ Exemplos:
 ```
 abre modal ‘Confirma Remoção do Registro’;
 ```
-#### E 72.2.4. Fecha Modal
+### 2.4. Fecha Modal
 
-	Fecha a modal informada. A modal deve ser referenciada pelo nome.
+Fecha a modal informada. A modal deve ser referenciada pelo nome.
 
 Sintaxe:
 ```
@@ -396,9 +373,9 @@ Exemplos:
 ```
 fecha modal ‘Confirma Remoção do Registro’;
 ```
-#### 2.2.5. Exibe Mensagem
+### 2.5. Exibe Mensagem
 
-	É comum os sistemas darem destaque às mensagens exibidas para o usuário. Estas mensagens geralmente utilizam um componente visual separado, no canto da tela ou em cor diferente. Por conta do destaque que esse conteúdo merece, a Konduto possui uma ação específica para ela.
+É comum os sistemas darem destaque às mensagens exibidas para o usuário. Estas mensagens geralmente utilizam um componente visual separado, no canto da tela ou em cor diferente. Por conta do destaque que esse conteúdo merece, a Konduto possui uma ação específica para ela.
 
 Sintaxe:
 ```
@@ -408,9 +385,9 @@ Exemplos:
 ```
 exibe mensagem ‘Operação realizada com sucesso’;
 ```
-#### 2.2.6. Direciona
+### 2.6. Direciona
 
-	Direciona para outra página, a qual pode ser uma funcionalidade interna ou um link externo. A ação indica se a referência deve ser entendida como uma URL ou como o nome de uma funcionalidade do sistema. No segundo caso, o sistema deve deduzir a URL associada à funcionalidade referenciada.
+Direciona para outra página, a qual pode ser uma funcionalidade interna ou um link externo. A ação indica se a referência deve ser entendida como uma URL ou como o nome de uma funcionalidade do sistema. No segundo caso, o sistema deve deduzir a URL associada à funcionalidade referenciada.
 
 Sintaxe:
 ```
@@ -422,9 +399,9 @@ Exemplos:
 direciona para ‘Cadastrar Pessoa’;
 direciona para url ‘www.google.com’;
 ```
-#### 2.2.7. Comenta
+### 2.7. Comenta
 
-	Insere um comentário no código-fonte.
+Insere um comentário no código-fonte.
 
 Sintaxe:
 ```
@@ -434,11 +411,11 @@ Exemplos:
 ```
 comenta ‘TODO verificar se esta eh a melhor alternativa’;
 ```
-#### 2.2.x. Declara Variável
+### 2.8. Declara Variável
 
-	Declara uma variável, especificando seu nome e seu tipo, mas não o seu valor.
-	O tipo pode ser primitivo (Texto, Número ou Booleano) ou composto.
-	Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcionalidade.
+Declara uma variável, especificando seu nome e seu tipo, mas não o seu valor.
+O tipo pode ser primitivo (Texto, Número ou Booleano) ou composto.
+Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcionalidade.
 
 Sintaxe:
 ```
@@ -453,11 +430,11 @@ Exemplos:
 declara ‘idade’ do tipo Número;
 declara ‘pessoa’ do tipo ‘Pessoa’;
 ```
-#### 2.2.x. Atribui um Valor a um Dado
+### 2.9. Atribui um Valor a um Dado
 
-	Declara uma variável, especificando seu nome e seu tipo, mas não o seu valor.
-	O tipo pode ser primitivo (Texto, Número ou Booleano) ou composto.
-	Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcionalidade.
+Declara uma variável, especificando seu nome e seu tipo, mas não o seu valor.
+O tipo pode ser primitivo (Texto, Número ou Booleano) ou composto.
+Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcionalidade.
 
 Sintaxe:
 ```
