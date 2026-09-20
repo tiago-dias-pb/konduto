@@ -419,8 +419,7 @@ Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcion
 
 Sintaxe:
 ```
-<acao_declara_variavel> ::=
-    “declara ‘” <nome_variavel> “’ do tipo ” <tipo_variavel> “;”
+<acao_declara_variavel> ::= “declara ‘” <nome_variavel> “’ do tipo ” <tipo_variavel> “;”
 <tipo_variavel> ::= <tipo_primitivo> | <tipo_composto>
 <tipo_primitivo> ::= “Texto” | “Número” | “Booleano”
 <tipo_composto> ::= “‘” <nome_entidade> “’”
@@ -432,20 +431,54 @@ declara ‘pessoa’ do tipo ‘Pessoa’;
 ```
 ### 2.9. Atribui um Valor a um Dado
 
-Declara uma variável, especificando seu nome e seu tipo, mas não o seu valor.
-O tipo pode ser primitivo (Texto, Número ou Booleano) ou composto.
-Se o tipo for composto, deve ser o nome de uma entidade do sistema ou da funcionalidade.
+Atribui o valor de uma expressão a um dado, que também é referenciado por uma expressão.
+As expressões serão descritas na seção 3.
 
 Sintaxe:
 ```
-<acao_declara_variavel> ::=
-    “declara ‘” <nome_variavel> “’ do tipo ” <tipo_variavel> “;”
-<tipo_variavel> ::= <tipo_primitivo> | <tipo_composto>
-<tipo_primitivo> ::= “Texto” | “Número” | “Booleano”
-<tipo_composto> ::= “‘” <nome_entidade> “’”
+<acao_atribui> ::= “atribui a (” <expressao> “) o valor (” <expressao> “);”
 ```
 Exemplos:
 ```
-declara ‘idade’ do tipo Número;
-declara ‘pessoa’ do tipo ‘Pessoa’;
+atribui a (p) o valor (nova('Pessoa'));
+atribui a (p.nome) o valor ('João');
+atribui a (p.idade) o valor (20);
 ```
+
+## 3. Expressões
+
+Algumas ações se baseiam em expressões.
+Esta seção lista as expressões aceitas pela linguagem Konduto.
+
+### 3.1. Constantes
+
+A Konduto aceita três tipos de constantes: numérica, textual e booleana.
+
+Sintaxe:
+```
+<constante> ::= <constante_numerica> | <constante_textual> | <constante_booleana>
+<constante_numerica> ::= <digito> | <digito> <constante_numerica>
+<digito> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<constante_textual> ::= "''"  | "'" <texto> "'"
+<texto> ::= <caractere> | <caractere> <texto>
+<caractere> -> qualquer caractere que não seja quebra de linha ou aspas simples
+<constante_booleana> ::= "sim" | "não"
+```
+Exemplos:
+```
+atribui a (pessoa.nome) o valor ('João');
+atribui a (pessoa.idade) o valor (20);
+atribui a (ehMaiorIdade) o valor (sim);
+```
+
+### 3.2. Referência
+
+
+
+
+
+
+
+
+
+
